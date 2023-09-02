@@ -1,4 +1,4 @@
-import asyncio, logging, requests
+import asyncio, logging, requests, os
 from bs4 import BeautifulSoup
 from aiogram import Bot, Dispatcher, types, filters, utils
 
@@ -10,10 +10,6 @@ dp = Dispatcher(bot)
 
 async def main():
     await dp.start_polling(bot)
-
-# @dp.message_handler()
-# async def start(message: types.Message):
-#     await message.answer('hello!')
 
 @dp.message_handler(commands=['start'])
 async def cmd_start(message: types.Message):
@@ -42,8 +38,9 @@ async def get_chapter_translate(message: types.Message):
         [types.KeyboardButton(text="Последние главы")]
         ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    await message.answer("Подождите, идет перевод")
-    parse.get_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
+    if not os.path.exists(f'translated/{number}.txt'): 
+        await message.answer("Подождите, идет перевод")
+        parse.get_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
     await message.reply_document(open(f'translated/{number}.txt', 'rb'), reply_markup=keyboard)
 
 if __name__ == "__main__":
