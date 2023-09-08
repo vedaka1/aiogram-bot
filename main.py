@@ -1,5 +1,4 @@
-import asyncio, logging, requests, os
-from bs4 import BeautifulSoup
+import asyncio, logging, os
 from aiogram import Bot, Dispatcher, types, filters, utils
 
 import config, parse
@@ -21,7 +20,7 @@ async def cmd_start(message: types.Message):
 
 @dp.message_handler(filters.Text('Последние главы'))
 async def get_chapters(message: types.Message):
-    chapters = parse.get_data('https://readlightnovel.app/the-beginning-after-the-end-535558')
+    chapters = parse.get_last_chapters('https://readlightnovel.app/the-beginning-after-the-end-535558')
     text = ''
     kb = []
     for chapter in chapters:
@@ -38,10 +37,14 @@ async def get_chapter_translate(message: types.Message):
         [types.KeyboardButton(text="Последние главы")]
         ]
     keyboard = types.ReplyKeyboardMarkup(keyboard=kb, resize_keyboard=True)
-    if not os.path.exists(f'translated/{number}.txt'): 
-        await message.answer("Подождите, идет перевод")
-        parse.get_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
-    await message.reply_document(open(f'translated/{number}.txt', 'rb'), reply_markup=keyboard)
+    try:
+        if not os.path.exists(f'translated/{number}.txt'): 
+            await message.answer("Подождите, идет перевод")
+            parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
+        await message.reply_document(open(f'translated/{number}.txt', 'rb'), reply_markup=keyboard)
+    except:
+        await message.answer("Возникла ошибка при переводе, попробуйте позже", reply_markup=keyboard)
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
