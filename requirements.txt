@@ -2,4 +2,4 @@ aiogram
 bs4
 requests
 asyncio
-googletrans
+deep_translator
