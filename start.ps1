@@ -1,0 +1,1 @@
+Start-Process python C:\Projects\Python\aiogram-bot\main.py
