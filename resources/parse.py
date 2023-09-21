@@ -1,8 +1,7 @@
-import requests
+import requests, os, traceback
 from bs4 import BeautifulSoup
-from translate import get_translate
+from resources.translate import get_translate
 from datetime import datetime
-
 
 url = 'https://readlightnovel.app/the-beginning-after-the-end-535558'
 
@@ -14,7 +13,7 @@ def time(func):
         print("Конец", datetime.now())
     return wrapper
     
-@time
+
 def get_last_chapters(url):
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -30,13 +29,16 @@ def get_chapter_text(url, number):
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
     chapter = soup.find(id="chapterText")
-    chapter_text = ''
-    file = open(f'/translated/{number}.txt', 'w', encoding='UTF-8')
+    file = open(f'C:/Projects/Python/aiogram-bot/translated/{number}.txt', 'w', encoding='UTF-8')
     print('Старт перевода', datetime.now())
     for item in chapter:
-        text_translate = get_translate(item.text)
-        chapter_text = (text_translate + '\n')
-        file.write(chapter_text)
+        try:
+            text_translate = get_translate(item.text)
+            file.write(str(text_translate) + '\n')
+        except:
+            file.close()
+            os.remove(f'C:/Projects/Python/aiogram-bot/translated/{number}.txt')
+            print(traceback.format_exc())
     file.close()
     print('Перевод завершен', datetime.now())
 
