@@ -29,7 +29,9 @@ def get_chapter_text(url, number):
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
     chapter = soup.find(id="chapterText")
-    file = open(f'C:/Projects/Python/aiogram-bot/translated/{number}.txt', 'w', encoding='UTF-8')
+    if not os.path.exists('../translated'):
+        os.mkdir('../translated')
+    file = open(f'../translated/{number}.txt', 'w', encoding='UTF-8')
     print('Старт перевода', datetime.now())
     for item in chapter:
         try:
@@ -37,7 +39,7 @@ def get_chapter_text(url, number):
             file.write(str(text_translate) + '\n')
         except:
             file.close()
-            os.remove(f'C:/Projects/Python/aiogram-bot/translated/{number}.txt')
+            os.remove(f'../translated/{number}.txt')
             print(traceback.format_exc())
     file.close()
     print('Перевод завершен', datetime.now())
