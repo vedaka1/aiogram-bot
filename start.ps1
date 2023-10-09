@@ -1,1 +1,1 @@
-Start-Process python C:\Projects\Python\aiogram-bot\main.py
+Start-Process python C:\Projects\Python\aiogram-bot\main.py -WindowStyle Hidden -Name "telegram_bot"

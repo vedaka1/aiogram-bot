@@ -21,7 +21,7 @@ def get_last_chapters(url):
     info = novel.find_all('a', {'class': 'box'})
     data = []
     for item in info[1::]:
-        data.append(f'{item.text} - {item.get("href")}')
+        data.append(f'{item.text[1:]} - {item.get("href")}')
     return data
 
     
@@ -29,9 +29,9 @@ def get_chapter_text(url, number):
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
     chapter = soup.find(id="chapterText")
-    if not os.path.exists('../translated'):
-        os.mkdir('../translated')
-    file = open(f'../translated/{number}.txt', 'w', encoding='UTF-8')
+    if not os.path.exists('./translated'):
+        os.mkdir('./translated')
+    file = open(f'./translated/{number}.txt', 'w', encoding='UTF-8')
     print('Старт перевода', datetime.now())
     for item in chapter:
         try:
@@ -39,7 +39,7 @@ def get_chapter_text(url, number):
             file.write(str(text_translate) + '\n')
         except:
             file.close()
-            os.remove(f'../translated/{number}.txt')
+            os.remove(f'./translated/{number}.txt')
             print(traceback.format_exc())
     file.close()
     print('Перевод завершен', datetime.now())
