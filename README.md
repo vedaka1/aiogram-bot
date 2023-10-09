@@ -21,6 +21,6 @@ Then run main.py
 
 ## Bot commands
 
-- /start - bot will send the last chapters of the novel
-- /start chat - enable chatGPT mode
-- /end chat - disable chatGPT mode
+- /start-chat - enable chatGPT mode
+- /end-chat - disable chatGPT mode
+- /last_chapters - bot will send the last chapters of the novel
