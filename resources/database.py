@@ -19,9 +19,9 @@ def close_connection():
 
 class Database:
     
-    def add_user(self, user_id):
+    def add_user(self, user_id, username):
         connection_db()
-        cur.callproc("tg_bot.add_user", [user_id])
+        cur.callproc("tg_bot.add_user", [user_id, username])
         conn.commit()
         close_connection()
 

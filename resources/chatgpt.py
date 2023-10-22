@@ -31,5 +31,5 @@ class ChatGPT:
 
     def clear_history(self):
         self.messages = [
-            {"role": "system", "content": f"{self.mode}"}
+            # {"role": "system", "content": f"{self.mode}"}
         ]

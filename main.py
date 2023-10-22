@@ -18,7 +18,6 @@ async def main():
 @dp.message(filters.Command("start_chat"))
 async def cmd_start_chat(message: types.Message):
     user_id = message.from_user.id
-    db.add_user(user_id)
     db.set_echo_mode(user_id, True) # Включает режим echo_mode у текущего пользователя
     await message.answer("ChatGPT mode enabled")
 
@@ -36,7 +35,9 @@ async def cmd_end_chat(message: types.Message):
 @dp.message(filters.Command("start"))
 async def cmd_start(message: types.Message):
     user_id = message.from_user.id
-    db.add_user(user_id)
+    username = message.from_user.username
+    db.add_user(user_id, username)
+    logger.info(f'New user: {user_id}!')
     await message.answer("Привет!\n" + "Доступные команды:\n  /start_chat запускает ChatGPT\n  /end_chat отключает ChatGPT\n  /last_chapters отправляет последние главы новеллы", parse_mode="HTML")
 
 
@@ -61,16 +62,31 @@ async def get_chapters(message: types.Message):
 @dp.callback_query(F.data.startswith("chapter_"))
 async def get_chapter_translate(callback: types.CallbackQuery):
     number = callback.data.split("_")[1]
+    buttons = [
+        [
+            types.InlineKeyboardButton(text='EN', callback_data=f"chapterlang_{number}_en"),
+            types.InlineKeyboardButton(text='RU', callback_data=f"chapterlang_{number}_ru")
+        ]
+        ]
+    keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
+    await bot.edit_message_reply_markup(chat_id=callback.message.chat.id, message_id=callback.message.message_id, reply_markup=keyboard)
+
+
+@dp.callback_query(F.data.startswith("chapterlang_"))
+async def get_chapter_translate(callback: types.CallbackQuery):
+    data = callback.data.split("_")
+    number, lang = data[1], data[2]
     try:
-        if not os.path.exists(f'translated/{number}.txt'):
+        if not os.path.exists(f'translated/{number}_{lang}.txt'):
             msg = await callback.message.answer("<i>Waiting for translate</i> \U0001F551")
-            parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
+            parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number, lang)
             await bot.delete_message(msg.chat.id, msg.message_id)
-        file = types.FSInputFile(f'translated/{number}.txt')
+        file = types.FSInputFile(f'translated/{number}_{lang}.txt')
         await callback.message.answer_document(file)
+        await bot.delete_message(chat_id=callback.message.chat.id, message_id=callback.message.message_id)
     except:
         await callback.message.answer("\U00002757 <i>Translation error, try again later</i>")
-        logger.error(f'User: {callback.from_user.id}, info: {traceback.format_exc()}')
+        logger.error(f'On callback from user: {callback.from_user.id}, info: {traceback.format_exc()}')
 
 
 @dp.message(F.text.contains("CH"))
@@ -111,7 +127,6 @@ if __name__ == "__main__":
     logging.basicConfig(filename='log_file.log',
                         level=logging.INFO,
                         encoding='UTF-8',
-                        format='%(asctime)s %(levelname)s: %(message)s',
-                        filemode='w')
+                        format='%(asctime)s %(levelname)s: %(message)s')
     logger = logging.getLogger()
     asyncio.run(main())
