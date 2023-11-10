@@ -15,14 +15,14 @@ async def main():
 
     dp.include_routers(chat.router, novel.router)
 
-    scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
+    scheduler = AsyncIOScheduler(timezone='Europe/Moscow') # Creating scheduler
     set_scheduler_tasks(scheduler, bot) # Creating tasks for scheduler
     scheduler.start()
 
     await dp.start_polling(bot)
 
 
-async def shedule_message(bot):
+async def sheduled_message(bot):
     chapters = parse.get_last_chapters('https://readlightnovel.app/the-beginning-after-the-end-535558')
     buttons = [
         [
@@ -40,11 +40,11 @@ async def shedule_message(bot):
 
 
 def set_scheduler_tasks(scheduler: AsyncIOScheduler, bot):
-    scheduler.add_job(shedule_message, 'cron', day_of_week ='fri', hour='21', minute='00', second='00', kwargs={'bot': bot})
+    scheduler.add_job(sheduled_message, 'cron', day_of_week ='fri', hour='22', minute='00', second='00', kwargs={'bot': bot})
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='log_file.log',
+    logging.basicConfig(filename='./log_file.log',
                         level=logging.INFO,
                         encoding='UTF-8',
                         format='%(asctime)s %(levelname)s: %(message)s')

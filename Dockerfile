@@ -1,8 +1,16 @@
-FROM python:latest
+FROM python:3.11-buster
 
-RUN pip install -r requirements.txt
-
-COPY . /app
+RUN mkdir app
 WORKDIR /app
 
-CMD python main.py
+ENV PATH="${PATH}:/root/.local/bin"
+ENV PYTHONPATH=.
+
+COPY requirements.txt .
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY src/ .
+
+CMD [ "python", "main.py" ]

@@ -15,6 +15,7 @@ def time(func):
     
 
 def get_last_chapters(url):
+    """Returns the last five chapters of the novel"""
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
     novel = soup.find('div', {'class': 'novels-detail-right'})
@@ -26,6 +27,8 @@ def get_last_chapters(url):
 
     
 def get_chapter_text(url, number, lang):
+    """Gets the chapter text and translate it into the target language
+    """
     response = requests.get(url=url)
     soup = BeautifulSoup(response.text, 'html.parser')
     chapter = soup.find(id="chapterText")

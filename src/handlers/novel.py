@@ -45,7 +45,7 @@ async def get_chapter_translate(callback: types.CallbackQuery):
         if not os.path.exists(f'./translated/{number}_{lang}.txt'):
             msg = await callback.message.answer("<i>Waiting for translate</i> \U0001F551")
             parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number, lang)
-            await msg.message.delete()
+            await msg.delete()
         file = types.FSInputFile(f'./translated/{number}_{lang}.txt')
         await callback.message.answer_document(file)
         await callback.message.delete()
