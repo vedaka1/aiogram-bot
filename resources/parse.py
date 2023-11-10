@@ -32,18 +32,7 @@ def get_chapter_text(url, number, lang):
     if not os.path.exists('./translated'):
         os.mkdir('./translated')
     file = open(f'./translated/{number}_{lang}.txt', 'w', encoding='UTF-8')
-    if lang == "ru":
-        print('Translation start', datetime.now())
-        for item in chapter:
-            try:
-                text_translate = get_translate(item.text)
-                file.write(str(text_translate) + '\n')
-            except:
-                file.close()
-                os.remove(f'./translated/{number}.txt')
-                print(traceback.format_exc())
-        print('End of translation', datetime.now())
-    else:
+    if lang == "en":
         for item in chapter:
             try:
                 file.write(str(item.text) + '\n')
@@ -51,5 +40,16 @@ def get_chapter_text(url, number, lang):
                 file.close()
                 os.remove(f'./translated/{number}_{lang}.txt')
                 print(traceback.format_exc())
+    else:
+        print('Translation start', datetime.now())
+        for item in chapter:
+            try:
+                text_translate = get_translate(item.text, lang)
+                file.write(str(text_translate) + '\n')
+            except:
+                file.close()
+                os.remove(f'./translated/{number}.txt')
+                print(traceback.format_exc())
+        print('End of translation', datetime.now())
     file.close()
 

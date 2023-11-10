@@ -6,3 +6,4 @@ deep_translator
 openai
 psycopg2
 logging
+apscheduler

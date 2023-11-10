@@ -6,3 +6,5 @@ Bot.bat
 start.ps1
 log_file.log
 test.py
+start.ps1
+.venv
