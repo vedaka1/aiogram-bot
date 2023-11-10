@@ -4,5 +4,5 @@ requests
 asyncio
 deep_translator
 openai
-psycopg2
-logging
+psycopg2-binary
+apscheduler

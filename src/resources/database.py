@@ -18,20 +18,23 @@ def close_connection():
 
 
 class Database:
-    
-    def add_user(self, user_id):
+    """Class for work with database"""
+    def add_user(self, user_id, username):
+        """Adds a user to the database"""
         connection_db()
-        cur.callproc("tg_bot.add_user", [user_id])
+        cur.callproc("tg_bot.add_user", [user_id, username])
         conn.commit()
         close_connection()
 
     def set_echo_mode(self, user_id, mode):
+        """Sets the user echo mode"""
         connection_db()
         cur.callproc("tg_bot.set_echo_mode", [user_id, mode])
         conn.commit()
         close_connection()
 
     def get_user_mode(self, user_id):
+        """Gets the mode from the database"""
         connection_db()
         cur.callproc("tg_bot.get_user_mode", [user_id])
         mode = cur.fetchone()
