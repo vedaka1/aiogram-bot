@@ -1,8 +1,8 @@
 from aiogram import Router, types, filters
-from aiogram import types, filters, md
+from aiogram import types, filters
 from resources.database import Database
-from resources.chatgpt import ChatGPT
-import traceback, logging
+from resources.chatgpt import FreeChatGPT
+import logging
 
 
 logger = logging.getLogger()
@@ -42,15 +42,8 @@ async def echo(message: types.Message):
     user_id = message.from_user.id
     logger.info(f'User: {user_id}, message: "{message.text}"',)
     if user_id not in chats:
-        chats[user_id] = ChatGPT()
+        chats[user_id] = FreeChatGPT(user_id)
     chats[user_id].append_message(message.text)
     msg = await message.answer(text = f"<i>Waiting</i> \U0001F551")
-    try: 
-        response = chats[user_id].response_completion(message.from_user.id)
-        response = md.unparse(response)
-        response = response.replace('\`\`\`', '```')
-        await msg.edit_text(response, parse_mode="MarkDownV2")
-    except:
-        chats[user_id].clear_history()
-        logger.error(f'User: {user_id}, info: {traceback.format_exc()}')
-        await message.edit_text(text = "\U00002757 <i>Token limit exceeded, clearing messsages list and restarting</i>", message_id= msg.message_id, chat_id= msg.chat.id)
+    response = await chats[user_id].run_all()
+    await msg.edit_text(response, parse_mode="MarkDownV2")

@@ -3,7 +3,7 @@ from aiogram import Bot, Dispatcher, types
 from resources import parse, config
 from resources.database import Database
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from handlers import novel, chat
+from handlers import novel, chat, admin
 
 
 db = Database()
@@ -13,7 +13,7 @@ async def main():
     bot = Bot(token=config.BOT_TOKEN, parse_mode="HTML")
     dp = Dispatcher()
 
-    dp.include_routers(chat.router, novel.router)
+    dp.include_routers(chat.router, novel.router, admin.router)
 
     scheduler = AsyncIOScheduler(timezone='Europe/Moscow') # Creating scheduler
     set_scheduler_tasks(scheduler, bot) # Creating tasks for scheduler
@@ -44,7 +44,7 @@ def set_scheduler_tasks(scheduler: AsyncIOScheduler, bot):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(filename='./log_file.log',
+    logging.basicConfig(
                         level=logging.INFO,
                         encoding='UTF-8',
                         format='%(asctime)s %(levelname)s: %(message)s')
