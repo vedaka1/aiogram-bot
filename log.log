@@ -1,0 +1,10 @@
+2024-01-13 15:26:09,970 INFO: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-01-13 15:26:09,972 INFO: Added job "sheduled_message" to job store "default"
+2024-01-13 15:26:09,972 INFO: Scheduler started
+2024-01-13 15:26:09,973 INFO: Start polling
+2024-01-13 15:26:10,214 INFO: Run polling for bot @vedaka_bot id=6037293758 - 'vedakabot'
+2024-01-13 15:26:11,733 INFO: Update id=844888356 is handled. Duration 1422 ms by bot id=6037293758
+2024-01-13 15:26:16,474 INFO: Update id=844888357 is handled. Duration 141 ms by bot id=6037293758
+2024-01-13 15:26:18,696 INFO: Update id=844888358 is handled. Duration 438 ms by bot id=6037293758
+2024-01-13 15:26:28,261 INFO: Update id=844888359 is handled. Duration 983 ms by bot id=6037293758
+2024-01-13 15:27:34,164 INFO: Update id=844888360 is handled. Duration 343 ms by bot id=6037293758

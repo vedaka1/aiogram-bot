@@ -5,23 +5,24 @@ from resources import parse
 logger = logging.getLogger()
 router = Router()
 
+website = "https://readlitenovel.com/the-beginning-after-the-end-535558"
 
 @router.message(filters.Command("last_chapters"))
 async def get_chapters(message: types.Message):
-    chapters = parse.get_last_chapters('https://readlightnovel.app/the-beginning-after-the-end-535558')
+    chapters = parse.get_last_chapters()
     buttons = [
         [
-            types.InlineKeyboardButton(text=chapters[0][:7], callback_data=f"chapter_{chapters[0][3:6]}"), 
-            types.InlineKeyboardButton(text=chapters[1][:7], callback_data=f"chapter_{chapters[1][3:6]}")
+            types.InlineKeyboardButton(text=f'CH {chapters[0][0]}', callback_data=f"chapter_{chapters[0][0]}"), 
+            types.InlineKeyboardButton(text=f'CH {chapters[1][0]}', callback_data=f"chapter_{chapters[1][0]}")
         ],
         [
-            types.InlineKeyboardButton(text=chapters[2][:7], callback_data=f"chapter_{chapters[2][3:6]}"),
-            types.InlineKeyboardButton(text=chapters[3][:7], callback_data=f"chapter_{chapters[3][3:6]}")
+            types.InlineKeyboardButton(text=f'CH {chapters[2][0]}', callback_data=f"chapter_{chapters[2][0]}"),
+            types.InlineKeyboardButton(text=f'CH {chapters[3][0]}', callback_data=f"chapter_{chapters[3][0]}")
         ],
-        [types.InlineKeyboardButton(text=chapters[4][:7], callback_data=f"chapter_{chapters[4][3:6]}")]
+        [types.InlineKeyboardButton(text=f'CH {chapters[4][0]}', callback_data=f"chapter_{chapters[4][0]}")]
         ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
-    await message.answer("<a href='https://readlightnovel.app/the-beginning-after-the-end-535558'>The Beginning After The End</a>\nChoose chapter to translate:", reply_markup=keyboard)
+    await message.answer(f"<a href='{website}'>The Beginning After The End</a>\nChoose chapter to translate:", reply_markup=keyboard)
 
 
 @router.callback_query(F.data.startswith("chapter_"))
@@ -44,7 +45,7 @@ async def get_chapter_translate(callback: types.CallbackQuery):
     try:
         if not os.path.exists(f'./translated/{number}_{lang}.txt'):
             msg = await callback.message.answer("<i>Waiting for translate</i> \U0001F551")
-            parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number, lang)
+            parse.get_chapter_text(f'{website}/chapter-{number}', number, lang)
             await msg.delete()
         file = types.FSInputFile(f'./translated/{number}_{lang}.txt')
         await callback.message.answer_document(file)
@@ -60,7 +61,7 @@ async def get_chapter_translate(message: types.Message):
     try:
         if not os.path.exists(f'translated/{number}.txt'):
             await message.answer("<i>Waiting for translate</i> \U0001F551")
-            parse.get_chapter_text(f'https://readlightnovel.app/the-beginning-after-the-end-535558/chapter-{number}', number)
+            parse.get_chapter_text(f'{website}/chapter-{number}', number)
         file = types.FSInputFile(f'translated/{number}.txt')
         await message.answer_document(file)
     except:

@@ -4,7 +4,9 @@ resources/__pycache__
 src/resources/config.py
 Bot.bat
 start.ps1
-log_file.log
+logs.log
 test.py
+test.json
+test.txt
 start.ps1
 .venv
