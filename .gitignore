@@ -10,3 +10,4 @@ test.json
 test.txt
 start.ps1
 .venv
+src/resources/shedule.py
