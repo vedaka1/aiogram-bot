@@ -38,8 +38,22 @@ class Database:
         connection_db()
         cur.callproc("tg_bot.get_user_mode", [user_id])
         mode = cur.fetchone()
+        conn.commit()
         close_connection()
         return mode[0]
+    
+    def get_last_users(self):
+        connection_db()
+        cur.execute("select * from tg_bot.users where last_use is not null")
+        users = cur.fetchall()
+        result = []
+        for user in users:
+            result.append({
+                "username": user[4],
+                "last_use": user[5].strftime("%Y-%m-%d %H:%M")
+            })
+        result = sorted(result, key=lambda user: user["last_use"], reverse=True)
+        return result
     
     # def add_user_messages(self, user_id, messages):
     #     connection_db()

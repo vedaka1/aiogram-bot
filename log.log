@@ -1,0 +1,20 @@
+2024-01-13 15:26:09,970 INFO: Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2024-01-13 15:26:09,972 INFO: Added job "sheduled_message" to job store "default"
+2024-01-13 15:26:09,972 INFO: Scheduler started
+2024-01-13 15:26:09,973 INFO: Start polling
+2024-01-13 15:26:10,214 INFO: Run polling for bot @vedaka_bot id=6037293758 - 'vedakabot'
+2024-01-13 15:26:11,733 INFO: Update id=844888356 is handled. Duration 1422 ms by bot id=6037293758
+2024-01-13 15:26:16,474 INFO: Update id=844888357 is handled. Duration 141 ms by bot id=6037293758
+2024-01-13 15:26:18,696 INFO: Update id=844888358 is handled. Duration 438 ms by bot id=6037293758
+2024-01-13 15:26:28,261 INFO: Update id=844888359 is handled. Duration 983 ms by bot id=6037293758
+2024-01-13 15:27:34,164 INFO: Update id=844888360 is handled. Duration 343 ms by bot id=6037293758
+2024-01-13 16:32:43,259 INFO: Update id=844888361 is handled. Duration 1219 ms by bot id=6037293758
+2024-01-13 17:22:04,970 INFO: User: 426826549, message: "Как отправить скрипт на Debian по ssh"
+2024-01-13 17:22:24,575 INFO: User: 426826549, chat_response: "Чтобы отправить скрипт на Debian по SSH, вам потребуется использовать команду scp\. Вот пример команды:
+
+scp /путь/к/скрипту/локально/скрипт\.sh пользователь@адрес\_сервера:/путь/на/сервере/скрипт\.sh
+
+Здесь "/путь/к/скрипту/локально/скрипт\.sh" \- это путь к вашему скрипту на локальном компьютере, "пользователь" \- имя пользователя на сервере Debian, "адрес\_сервера" \- IP\-адрес или доменное имя сервера Debian, а "/путь/на/сервере/скрипт\.sh" \- это путь, куда вы хотите скопировать скрипт на сервере\.
+
+Убедитесь, что у вас есть права доступа к серверу по SSH и что вы знаете пароль или используете ключевую аутентификацию\."
+2024-01-13 17:22:24,850 INFO: Update id=844888362 is handled. Duration 20938 ms by bot id=6037293758
