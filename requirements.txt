@@ -4,5 +4,6 @@ requests
 asyncio
 deep_translator
 openai
-psycopg2 | psycopg2-binary
+psycopg2
 apscheduler
+google-generativeai

@@ -11,18 +11,18 @@ logger = logging.getLogger()
 g4f.debug.logging = False
 
 _providers = [
-            # g4f.Provider.Aichat,
-            g4f.Provider.ChatBase,
-            # g4f.Provider.Bing,
-            g4f.Provider.GptGo,
-            # g4f.Provider.You,
-            # g4f.Provider.Yqcloud,
-            g4f.Provider.GPTalk,
-            # g4f.Provider.Hashnode,
-            g4f.Provider.FreeGpt,
-            g4f.Provider.ChatgptAi,
-            g4f.Provider.GptForLove
-        ]
+    # g4f.Provider.Aichat,
+    g4f.Provider.ChatBase,
+    # g4f.Provider.Bing,
+    g4f.Provider.GptGo,
+    # g4f.Provider.You,
+    # g4f.Provider.Yqcloud,
+    g4f.Provider.GPTalk,
+    # g4f.Provider.Hashnode,
+    g4f.Provider.FreeGpt,
+    g4f.Provider.ChatgptAi,
+    g4f.Provider.GptForLove
+]
 
 class ChatGPT:
     """ChatGPT class for bot users
@@ -34,10 +34,7 @@ class ChatGPT:
         self.key = key
         self.mode = config.ROLE
         self.db = Database()
-        self.messages  = [
-            # {"role": "system", "content": f"{self.mode}"}
-        ]
-
+        self.messages  = []
         self.client = openai.OpenAI(api_key=self.key)
 
     def response_completion(self, append=True):
@@ -50,7 +47,8 @@ class ChatGPT:
             )
             response = completion.choices[0].message.content
             if append:
-                self.messages.append({"role": "assistant", "content": response})
+                self.messages.append({"role": "assistant",
+                                      "content": response})
             response = md.unparse(response)
             response = response.replace("\`\`\`", "```")
             return response
@@ -62,31 +60,38 @@ class ChatGPT:
     def append_message(self, message):
         """Adds the user's message to the message list"""
         print('You:', message)
-        self.messages.append({"role": "user", "content": message})
+        self.messages.append(
+            {
+                "role": "user",
+                "content": message
+            }
+        )
 
     def clear_history(self):
         '''Clears message history'''
-        self.messages = [
-            # {"role": "system", "content": f"{self.mode}"}
-        ]
+        self.messages = [self.messages[-1]]
+
 
 class FreeChatGPT:
     """ChatGPT class for bot users
     Contains the user's message history
     """
-    def __init__(self, user_id: int = 0,
-                 model: str = "gpt-3.5-turbo",
-                 key=config.API_KEY):
+    def __init__(
+            self, user_id: int = 0,
+            model: str = "gpt-3.5-turbo",
+            key=config.API_KEY
+        ):
         self.user_id = user_id
         self.model = model
         self.key = key
         self.mode = config.ROLE
         self.db = Database()
         self.messages  = [
-            {"role": "system", "content": "You will be answer in Russian"}
+            {
+                "role": "system",
+                "content": "You will be answer in Russian"
+            }
         ]
-        self.messages_length = 30
-
         self.client = openai.OpenAI(api_key=self.key)
 
     async def response_completion(self, append=True):
@@ -95,9 +100,14 @@ class FreeChatGPT:
             completion = await g4f.ChatCompletion.create_async(
                     model="gpt-3.5-turbo",
                     messages=self.messages
-                )
+            )
             if append:
-                self.messages.append({"role": "assistant", "content": completion})
+                self.messages.append(
+                    {
+                        "role": "assistant",
+                        "content": completion
+                    }
+                )
             completion = md.unparse(completion)
             completion = completion.replace('\`\`\`', '```')
             return completion
@@ -119,7 +129,7 @@ class FreeChatGPT:
         except Exception as e:
             print(f"{provider.__name__}:", e)
 
-    async def run_complections(self):
+    async def generate_response(self):
         '''Generates responses from different providers'''
         calls = [
             self.run_provider(provider, self.messages) for provider in _providers
@@ -127,8 +137,12 @@ class FreeChatGPT:
         responses = await asyncio.gather(*calls)
         result = [response for response in responses if response is not None and response != ""]
         if result:
-            self.messages_length += len(result[0])
-            self.messages.append({"role": "assistant", "content": result[0]})
+            self.messages.append(
+                {
+                    "role": "assistant",
+                    "content": result[0]
+                }
+            )
             response = md.unparse(result[0])
             response = response.replace('\`\`\`', '```')
             logger.info('User: %s, chat_response: "%s"', self.user_id, response)
@@ -138,10 +152,13 @@ class FreeChatGPT:
 
     def append_message(self, message):
         """Adds the user's message to the message list"""
-        self.messages_length += len(message)
-        self.messages.append({"role": "user", "content": message})
+        self.messages.append(
+            {
+                "role": "user",
+                "content": message
+            }
+        )
 
     def clear_history(self):
         '''Clears message history'''
-        self.messages_length = 30
         self.messages = [self.messages[0], self.messages[-1]]

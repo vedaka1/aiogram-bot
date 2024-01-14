@@ -2,6 +2,7 @@ from typing import Any, Callable, Dict, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
+
 class AdminMiddleware(BaseMiddleware):
     async def __call__(
             self,
