@@ -1,6 +1,7 @@
-from resources.config import DB
-import psycopg2, traceback
+import traceback
+import psycopg2
 from psycopg2.extensions import register_type, UNICODE
+from resources.config import DB
 
 
 def connection_db():
@@ -48,10 +49,12 @@ class Database:
         users = cur.fetchall()
         result = []
         for user in users:
-            result.append({
-                "username": user[4],
-                "last_use": user[5].strftime("%Y-%m-%d %H:%M")
-            })
+            result.append(
+                {
+                    "username": user[4],
+                    "last_use": user[5].strftime("%Y-%m-%d %H:%M")
+                }
+            )
         result = sorted(result, key=lambda user: user["last_use"], reverse=True)
         return result
     
