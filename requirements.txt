@@ -4,6 +4,8 @@ requests
 asyncio
 deep_translator
 openai
-psycopg2
+asyncpg
 apscheduler
 google-generativeai
+g4f
+pydantic-settings

@@ -1,1 +1,0 @@
-Start-Process ~/AppData/Local/Programs/Python/Python311/python.exe C:\Projects\Python\aiogram-bot\src\main.py -WindowStyle Hidden
