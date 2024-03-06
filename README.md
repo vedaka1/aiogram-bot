@@ -9,12 +9,18 @@ It can:
 
 ## Setup
 
-Create a config.py file in the resources folder and enter the following variables:
-
+Create a .env file and enter the following variables:
 ```python
-BOT_TOKEN = ""  # telegram bot token
-API_KEY = ""    # openAI api key
-ROLE = ""       # personality for ChatGPT assistant
+BOT_TOKEN=
+API_KEY=
+API_KEY_GEMINI=
+ROLE=
+
+DB_HOST=
+DB_PORT=
+DB_USER=
+DB_PASS=
+DB_NAME=
 ```
 
 Then run main.py
@@ -23,4 +29,5 @@ Then run main.py
 
 - /start-chat - enable chatGPT mode
 - /end-chat - disable chatGPT mode
+- /select-model - select AI model
 - /last_chapters - bot will send the last chapters of the novel

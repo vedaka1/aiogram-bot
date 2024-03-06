@@ -1,7 +1,6 @@
 translated
 __pycache__
 resources/__pycache__
-src/resources/config.py
 src/shedule.py
 Bot.bat
 start.ps1
@@ -11,3 +10,4 @@ test.json
 test.txt
 start.ps1
 .venv
+.env

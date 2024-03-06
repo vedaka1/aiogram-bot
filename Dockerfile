@@ -7,6 +7,7 @@ ENV PATH="${PATH}:/root/.local/bin"
 ENV PYTHONPATH=.
 
 COPY requirements.txt .
+COPY .env .
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
