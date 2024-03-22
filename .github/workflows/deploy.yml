@@ -1,0 +1,47 @@
+name: Deploy CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    
+    - name: Pull latest version on remote host
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        path: ${{ secrets.PATH }}
+        script: |
+          cd "$PATH"
+          git pull
+          docker stop tgbot
+          docker rm tgbot
+          docker image rm tgbot
+          docker build -t tgbot .
+          docker run
+          
+    - name: Create and start docker container
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.KEY }}
+        port: ${{ secrets.PORT }}
+        path: ${{ secrets.PATH }}
+        script: |
+          docker stop tgbot
+          docker rm tgbot
+          docker image rm tgbot
+          docker build -t tgbot .
+          docker run -d --name tgbot tgbot
