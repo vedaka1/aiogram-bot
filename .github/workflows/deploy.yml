@@ -25,7 +25,9 @@ jobs:
         port: ${{ secrets.PORT }}
         envs: project_path
         script: |
+          echo "$project_path"
           cd $project_path
+          pwd
           git pull
           docker stop tgbot
           docker rm tgbot
