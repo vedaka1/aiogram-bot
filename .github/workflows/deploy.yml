@@ -16,19 +16,18 @@ jobs:
     
     - name: Pull changes and start docker container
       uses: appleboy/ssh-action@v1.0.3
-      env:
-        project_path: ${{ secrets.PATH }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        envs: project_path
         script: |
-          cd $project_path && git pull
-          docker stop tgbot
-          docker rm tgbot
-          docker image rm tgbot
-          cd $project_path && docker build -t tgbot .
-          docker run -d --name tgbot tgbot
+          cd ${{ secrets.PATH }};
+          git checkout main:
+          git pull;
+          docker stop tgbot;
+          docker rm tgbot;
+          docker image rm tgbot;
+          cd $project_path && docker build -t tgbot .;
+          docker run -d --name tgbot tgbot;
 
