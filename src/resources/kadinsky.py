@@ -59,18 +59,3 @@ class Text2ImageAPI:
 
 
 text2image = Text2ImageAPI()
-
-
-# async def test():
-#     uuid = await text2image.generate_response(
-#         "сакура растет посреди разрушенной и мрачной улицы в стиле киберпанк"
-#     )
-#     images = await text2image.check_generation(uuid)
-#     image_base64 = images[0]
-#     image_data = base64.b64decode(image_base64)
-#     with open("image.txt", "w") as file:
-#         file.write(image_base64 + "\n")
-#         file.write(image_data + "\n")
-
-
-# asyncio.run(test())
