@@ -28,6 +28,6 @@ jobs:
           docker stop tgbot;
           docker rm tgbot;
           docker image rm tgbot;
-          cd $project_path && docker build -t tgbot .;
+          docker build -t tgbot .;
           docker run -d --name tgbot tgbot;
 
