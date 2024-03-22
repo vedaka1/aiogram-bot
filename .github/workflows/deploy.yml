@@ -25,13 +25,10 @@ jobs:
         port: ${{ secrets.PORT }}
         envs: project_path
         script: |
-          echo "$project_path"
-          cd $project_path
-          pwd
-          git pull
+          cd $project_path && git pull
           docker stop tgbot
           docker rm tgbot
           docker image rm tgbot
-          docker build -t tgbot .
+          cd $project_path && docker build -t tgbot .
           docker run -d --name tgbot tgbot
 
