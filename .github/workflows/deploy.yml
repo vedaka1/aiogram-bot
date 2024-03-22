@@ -25,11 +25,6 @@ jobs:
         script: |
           cd "$PATH"
           git pull
-          docker stop tgbot
-          docker rm tgbot
-          docker image rm tgbot
-          docker build -t tgbot .
-          docker run
           
     - name: Create and start docker container
       uses: appleboy/ssh-action@v1.0.3
