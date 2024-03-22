@@ -6,15 +6,15 @@ import openai
 from aiogram import md
 from openai import APIStatusError, RateLimitError
 
+from models import User
 from resources.config import settings
-from resources.database import Database
 
 logger = logging.getLogger()
 g4f.debug.logging = False
 _providers = [
     g4f.Provider.Aura,
     g4f.Provider.GeminiProChat,
-    g4f.Provider.Koala,
+    # g4f.Provider.Koala,
     # g4f.Provider.Aichat,
     g4f.Provider.ChatBase,
     # g4f.Provider.Bing,
@@ -26,13 +26,16 @@ _providers = [
     # g4f.Provider.FreeGpt,
     g4f.Provider.ChatgptAi,
     g4f.Provider.Liaobots,
+    g4f.Provider.Chatgpt4Online,
+    g4f.Provider.ChatgptNext,
+    g4f.Provider.ChatgptX,
     # g4f.Provider.GptForLove
 ]
 
 
 model: str = "gpt-3.5-turbo"
-client = openai.AsyncOpenAI(api_key=settings.API_KEY)
-test_client = openai.OpenAI(api_key=settings.API_KEY)
+client = openai.AsyncOpenAI(api_key=settings.API_KEY_CHATGPT)
+test_client = openai.OpenAI(api_key=settings.API_KEY_CHATGPT)
 
 
 class ChatGPT:
@@ -84,38 +87,17 @@ class ChatGPT:
 
 
 class FreeChatGPT:
-    """ChatGPT class for bot users
+    """
+    ChatGPT class for bot users
     Contains the user's message history
     """
 
-    def __init__(
-        self,
-        user_id: int = 0,
-    ):
-        self.user_id = user_id
-        self.messages = [{"role": "system", "content": "You will be answer in Russian"}]
-
-    async def response_completion(self, append=True):
-        """Creates a response from g4f ChatGPT"""
-        try:
-            completion = await g4f.ChatCompletion.create_async(
-                model="gpt-3.5-turbo", messages=self.messages
-            )
-            if append:
-                self.messages.append({"role": "assistant", "content": completion})
-            completion = md.unparse(completion)
-            completion = completion.replace("\`\`\`", "```")
-            return completion
-        except Exception as e:
-            logger.error("User: %s, info: %s", self.user_id, e)
-            return "\U00002757 _Token limit exceeded\, clearing messsages list and restarting_"
-
-    async def run_provider(self, provider: g4f.Provider.BaseProvider, messages):
+    async def _run_provider(self, provider: g4f.Provider.BaseProvider, user_messages):
         """Runs the chat provider"""
         try:
             response = await g4f.ChatCompletion.create_async(
                 model=g4f.models.default,
-                messages=messages,
+                messages=user_messages,
                 provider=provider,
             )
             print(f"{provider.__name__}:", response)
@@ -123,9 +105,9 @@ class FreeChatGPT:
         except Exception as e:
             print(f"{provider.__name__}:", e)
 
-    async def generate_response(self):
+    async def generate_response(self, user: User) -> str:
         """Generates responses from different providers"""
-        calls = [self.run_provider(provider, self.messages) for provider in _providers]
+        calls = [self._run_provider(provider, user.messages) for provider in _providers]
         responses = await asyncio.gather(*calls)
         result = [
             response
@@ -133,18 +115,15 @@ class FreeChatGPT:
             if response is not None and response != ""
         ]
         if result:
-            self.messages.append({"role": "assistant", "content": result[0]})
+            user.messages.append({"role": "assistant", "content": result[0]})
             response = md.unparse(result[0])
             response = response.replace("\`\`\`", "```")
-            logger.info('User: %s, chat_response: "%s"', self.user_id, response)
+            logger.info('User: %s, chat_response: "%s"', user.id, response)
             return response
-        logger.error("User: %s, info: %s", self.user_id, responses)
+        logger.error("User: %s, info: %s", user.id, responses)
         return False
 
-    def append_message(self, message):
+    @staticmethod
+    def create_message(message):
         """Adds the user's message to the message list"""
-        self.messages.append({"role": "user", "content": message})
-
-    def clear_history(self):
-        """Clears message history"""
-        self.messages = [self.messages[0], self.messages[-1]]
+        return {"role": "user", "content": message}
