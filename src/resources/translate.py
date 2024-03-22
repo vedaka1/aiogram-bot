@@ -3,7 +3,7 @@ import traceback
 from deep_translator import GoogleTranslator
 
 
-def get_translate(text, lang):
+def get_translate(text: str, lang: str) -> str:
     """Translates text into the target language"""
     google = GoogleTranslator(source="auto", target=lang)
     try:

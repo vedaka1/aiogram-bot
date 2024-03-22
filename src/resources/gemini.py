@@ -4,6 +4,7 @@ import google.generativeai as genai
 from aiogram import md
 from google.api_core.exceptions import FailedPrecondition
 
+from models import User
 from resources.config import settings
 
 logger = logging.getLogger()
@@ -13,30 +14,25 @@ model = gemini.GenerativeModel("gemini-pro")
 
 
 class GeminiAI:
-    def __init__(self, user_id: int):
-        self.user_id = user_id
-        self.messages = []
-
-    async def generate_response(self) -> str:
+    @staticmethod
+    async def generate_response(user: User) -> str:
         try:
-            response = await model.generate_content_async(self.messages)
-            self.messages.append({"role": "model", "parts": [response.text]})
+            response = await model.generate_content_async(user.messages)
+            user.messages.append({"role": "model", "parts": [response.text]})
             response = md.unparse(response.text)
             response = response.replace("\`\`\`", "```")
             return response
         except Exception as e:
-            logger.error("User: %s, info: %s", self.user_id, e)
+            logger.error("User: %s, info: %s", user.id, e)
             return False
 
-    def append_message(self, message):
+    @staticmethod
+    def create_message(message):
         """Adds the user's message to the message list"""
-        self.messages.append({"role": "user", "parts": [message]})
+        return {"role": "user", "parts": [message]}
 
-    def clear_history(self):
-        self.messages = [self.messages[-1]]
-
-    @classmethod
-    def _test_access(self) -> bool:
+    @staticmethod
+    def _test_access() -> bool:
         try:
             model.generate_content("Hello")
             return True
