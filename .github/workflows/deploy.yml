@@ -14,29 +14,22 @@ jobs:
 
     steps:
     
-    - name: Pull latest version on remote host
+    - name: Pull changes and start docker container
       uses: appleboy/ssh-action@v1.0.3
+      env:
+        project_path: ${{ secrets.PATH }}
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
-        path: ${{ secrets.PATH }}
+        envs: project_path
         script: |
-          cd "$PATH"
+          cd "$project_path"
           git pull
-          
-    - name: Create and start docker container
-      uses: appleboy/ssh-action@v1.0.3
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        path: ${{ secrets.PATH }}
-        script: |
           docker stop tgbot
           docker rm tgbot
           docker image rm tgbot
           docker build -t tgbot .
           docker run -d --name tgbot tgbot
+
