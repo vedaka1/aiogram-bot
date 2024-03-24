@@ -7,7 +7,7 @@ from aiogram import md
 from openai import APIStatusError, RateLimitError
 
 from models import User
-from resources.config import settings
+from utils.config import settings
 
 logger = logging.getLogger()
 g4f.debug.logging = False

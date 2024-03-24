@@ -4,7 +4,7 @@ import traceback
 
 from aiogram import F, Router, filters, types
 
-from resources import parse
+from utils import parse
 
 logger = logging.getLogger()
 router = Router()

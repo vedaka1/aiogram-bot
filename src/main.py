@@ -6,8 +6,8 @@ from aiogram import Bot, Dispatcher, types
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from handlers import admin, chat, images, novel
-from resources import parse
-from resources.config import settings
+from utils import parse
+from utils.config import settings
 
 
 async def main():
