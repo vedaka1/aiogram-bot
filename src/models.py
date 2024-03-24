@@ -1,8 +1,3 @@
-import asyncio
-
-from resources.database import db
-
-
 class User:
     def __init__(self, id: int):
         self.id = id

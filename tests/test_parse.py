@@ -1,5 +1,4 @@
-from src.resources.parse import *
-
+from src.utils.parse import *
 
 
 def test_get_last_chapters():

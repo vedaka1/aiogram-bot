@@ -5,7 +5,7 @@ from aiogram import md
 from google.api_core.exceptions import FailedPrecondition
 
 from models import User
-from resources.config import settings
+from utils.config import settings
 
 logger = logging.getLogger()
 gemini = genai

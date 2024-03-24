@@ -5,7 +5,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-from resources.translate import get_translate
+from utils.translate import get_translate
 
 
 def get_last_chapters() -> list:

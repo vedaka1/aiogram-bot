@@ -3,9 +3,9 @@ import logging
 from aiogram import Bot, F, Router, filters, types
 
 from models import User
-from resources.chatgpt import ChatGPT, FreeChatGPT
-from resources.database import db
-from resources.gemini import GeminiAI
+from utils.chatgpt import ChatGPT, FreeChatGPT
+from utils.database import db
+from utils.gemini import GeminiAI
 
 logger = logging.getLogger()
 router = Router()

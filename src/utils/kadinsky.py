@@ -4,7 +4,7 @@ import json
 
 from httpx import AsyncClient, Client, Response
 
-from resources.config import settings
+from utils.config import settings
 
 
 class Text2ImageAPI:
@@ -19,7 +19,7 @@ class Text2ImageAPI:
         )
         self.model_id = self.__get_model()
 
-    def __get_model(self):
+    def __get_model(self) -> int:
         with Client() as client:
             response: Response = client.get(
                 "https://api-key.fusionbrain.ai/key/api/v1/models",
@@ -28,7 +28,9 @@ class Text2ImageAPI:
             data = response.json()
             return data[0]["id"]
 
-    async def generate_response(self, prompt, images=1, width=1024, height=1024):
+    async def generate_response(
+        self, prompt: str, images=1, width=1024, height=1024
+    ) -> str:
         params = {
             "type": "GENERATE",
             "numImages": images,
@@ -45,14 +47,15 @@ class Text2ImageAPI:
         data = response.json()
         return data["uuid"]
 
-    async def check_generation(self, request_id, attempts=10, delay=10):
+    async def check_generation(self, request_id: int, attempts=10, delay=10) -> bytes:
         while attempts > 0:
             response = await self.client.get(
                 "key/api/v1/text2image/status/" + request_id
             )
             data = response.json()
             if data["status"] == "DONE":
-                return data["images"]
+                image = base64.b64decode(data["images"][0])
+                return image
 
             attempts -= 1
             await asyncio.sleep(delay)
