@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  tgbot:
+    container_name: tgbot
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./translated:/app/translated
+    env_file:
+      - .env

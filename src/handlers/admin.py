@@ -1,7 +1,7 @@
 from aiogram import Router, filters, types
 
+from database import db
 from middlewares.administrator import AdminMiddleware
-from utils.database import db
 
 router = Router()
 router.message.middleware(AdminMiddleware())

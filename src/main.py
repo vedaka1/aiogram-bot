@@ -1,17 +1,23 @@
 import asyncio
-import logging
 import os
 
 from aiogram import Bot, Dispatcher, types
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+from common.logger import init_logger
+from config import settings
 from handlers import admin, chat, images, novel
 from utils import parse
-from utils.config import settings
 
 
 async def main():
-    bot = Bot(token=settings.BOT_TOKEN, parse_mode="HTML")
+    init_logger()
+    bot = Bot(
+        token=settings.BOT_TOKEN,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
+    )
     dp = Dispatcher()
     dp.include_routers(
         novel.router,
@@ -51,11 +57,4 @@ def set_scheduler_tasks(scheduler: AsyncIOScheduler, bot):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        # filename="log.log",
-        level=logging.INFO,
-        encoding="UTF-8",
-        format="%(asctime)s %(levelname)s: %(message)s",
-    )
-    logger = logging.getLogger()
     asyncio.run(main())
