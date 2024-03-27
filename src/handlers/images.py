@@ -1,9 +1,8 @@
-import base64
 import logging
 
 from aiogram import Bot, Router, filters, types
 
-from utils.kadinsky import text2image
+from utils.models.kadinsky import text2image
 
 logger = logging.getLogger()
 router = Router()

@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 import asyncpg
 
-from utils.config import settings
+from config import settings
 
 
 class Database:

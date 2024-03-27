@@ -2,16 +2,17 @@ import logging
 
 from aiogram import Bot, F, Router, filters, types
 
-from models import User
-from utils.chatgpt import ChatGPT, FreeChatGPT
-from utils.database import db
-from utils.gemini import GeminiAI
+from database import db
+from domain.users.user import User
+from utils.models.chatgpt import ChatGPT, FreeChatGPT
+from utils.models.gemini import GeminiAI
 
 logger = logging.getLogger()
 router = Router()
 chats = {}  # Users chats
 available_models = {
     "Gemini": {"model": GeminiAI(), "status": GeminiAI._test_access()},
+    "Gemini": {"model": ChatGPT(), "status": ChatGPT._test_access()},
     # 'ChatGPT': ChatGPT._test_access(),
     "FreeChatGPT": {"model": FreeChatGPT(), "status": True},
 }
