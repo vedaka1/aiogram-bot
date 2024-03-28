@@ -2,7 +2,7 @@ import logging
 
 from aiogram import Bot, Router, filters, types
 
-from utils.models.kadinsky import text2image
+from logic.models.kadinsky import text2image
 
 logger = logging.getLogger()
 router = Router()

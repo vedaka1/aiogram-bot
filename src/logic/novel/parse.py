@@ -1,11 +1,10 @@
 import os
 import traceback
-from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
 
-from utils.translate import get_translate
+from logic.novel.translate import get_translate
 
 
 def get_last_chapters() -> list:
@@ -39,7 +38,6 @@ def get_chapter_text(url, number, lang):
                     os.remove(f"./translated/{number}_{lang}.txt")
                     print(traceback.format_exc())
         else:
-            print("Translation start", datetime.now())
             for item in chapter:
                 try:
                     text_translate = get_translate(item.text, lang)
@@ -48,5 +46,4 @@ def get_chapter_text(url, number, lang):
                     file.close()
                     os.remove(f"./translated/{number}.txt")
                     print(traceback.format_exc())
-            print("End of translation", datetime.now())
         file.close()

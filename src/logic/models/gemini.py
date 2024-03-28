@@ -4,11 +4,11 @@ from dataclasses import dataclass, field
 import google.generativeai as genai
 from google.api_core.exceptions import FailedPrecondition
 
-from common.logger import init_logger
-from config import settings
-from domain.common.base import BaseTextModel
 from domain.common.response import Response
+from domain.neuro.model import BaseTextModel
 from domain.users.user import User
+from infrastructure.ioc import init_logger
+from settings import settings
 
 
 def init_gemini() -> genai.GenerativeModel:

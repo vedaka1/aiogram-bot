@@ -4,7 +4,7 @@ import json
 
 from httpx import AsyncClient, Client, Response
 
-from config import settings
+from settings import settings
 
 
 class Text2ImageAPI:

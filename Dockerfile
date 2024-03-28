@@ -1,16 +1,16 @@
-FROM python:3.11-buster
+FROM python:3.12.1-slim-bullseye AS builder 
 
-RUN mkdir app
 WORKDIR /app
 
-ENV PATH="${PATH}:/root/.local/bin"
 ENV PYTHONPATH=.
 
-COPY requirements.txt .
-COPY .env .
+COPY poetry.lock pyproject.toml .env ./
 
 RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
+RUN pip install poetry==1.7.1
+
+RUN poetry config virtualenvs.create false
+RUN poetry install --without test --no-root --no-interaction --no-ansi
 
 COPY src/ .
 

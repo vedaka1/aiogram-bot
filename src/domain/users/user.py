@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 
-from domain.common.base import BaseTextModel
+from domain.neuro.model import BaseTextModel
 
 
 @dataclass
