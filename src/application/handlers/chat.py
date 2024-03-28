@@ -2,18 +2,17 @@ import logging
 
 from aiogram import Bot, F, Router, filters, types
 
-from database import db
 from domain.users.user import User
-from utils.models.chatgpt import ChatGPT, FreeChatGPT
-from utils.models.gemini import GeminiAI
+from infrastructure.ioc import user_repository
+from logic.models.chatgpt import ChatGPT, FreeChatGPT
+from logic.models.gemini import GeminiAI
 
 logger = logging.getLogger()
 router = Router()
 chats = {}  # Users chats
 available_models = {
     "Gemini": {"model": GeminiAI(), "status": GeminiAI._test_access()},
-    "Gemini": {"model": ChatGPT(), "status": ChatGPT._test_access()},
-    # 'ChatGPT': ChatGPT._test_access(),
+    "ChatGPT": {"model": ChatGPT(), "status": ChatGPT._test_access()},
     "FreeChatGPT": {"model": FreeChatGPT(), "status": True},
 }
 
@@ -22,10 +21,10 @@ available_models = {
 async def cmd_start(message: types.Message, bot: Bot):
     user_id = message.from_user.id
     username = message.from_user.username
-    await db.add_user(user_id, username)
+    await user_repository.add_user(user_id, username)
     logger.info(f"New user: {user_id}!")
     await bot.send_message(
-        chat_id=426826549, text=f"New user _{username}_\!", parse_mode="MarkDownV2"
+        chat_id=426826549, text=f"New user _{username}_\\!", parse_mode="MarkDownV2"
     )
     await message.answer(
         "Привет!\n"
@@ -40,7 +39,7 @@ async def cmd_start(message: types.Message, bot: Bot):
 @router.message(filters.Command("start_chat"))
 async def cmd_start_chat(message: types.Message):
     user_id = message.from_user.id
-    await db.set_echo_mode(
+    await user_repository.set_echo_mode(
         user_id, True
     )  # Включает режим echo_mode у текущего пользователя
     await message.answer("ChatGPT mode enabled")
@@ -50,7 +49,7 @@ async def cmd_start_chat(message: types.Message):
 @router.message(filters.Command("end_chat"))
 async def cmd_end_chat(message: types.Message):
     user_id = message.from_user.id
-    await db.set_echo_mode(
+    await user_repository.set_echo_mode(
         user_id, False
     )  # Отключает режим echo_mode у текущего пользователя
     if user_id in chats:
@@ -60,7 +59,7 @@ async def cmd_end_chat(message: types.Message):
 
 @router.message(lambda m: m.from_user.id not in chats)
 async def check_model(message: types.Message):
-    if await db.get_user_mode(message.from_user.id):
+    if await user_repository.get_user_mode(message.from_user.id):
         await cmd_select_model(message)
 
 

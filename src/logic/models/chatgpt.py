@@ -5,11 +5,11 @@ from dataclasses import dataclass, field
 import g4f
 import openai
 
-from common.logger import init_logger
-from config import settings
-from domain.common.base import BaseTextModel
 from domain.common.response import Response
+from domain.neuro.model import BaseTextModel
 from domain.users.user import User
+from infrastructure.ioc import init_logger
+from settings import settings
 
 g4f.debug.logging = False
 _providers = [

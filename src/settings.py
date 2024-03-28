@@ -7,7 +7,6 @@ class Settings(BaseSettings):
     API_KEY_GEMINI: str
     API_KEY_KADINSKY: str
     API_SECRET_KEY_KADINSKY: str
-    ROLE: str
 
     DB_HOST: str
     DB_PORT: str

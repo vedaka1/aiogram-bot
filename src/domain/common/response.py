@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from aiogram import md
 
-from domain.common.base import BaseValueObject
+from domain.common.value import BaseValueObject
 
 
 @dataclass
