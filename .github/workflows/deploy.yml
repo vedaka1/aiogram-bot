@@ -25,9 +25,7 @@ jobs:
           cd ${{ secrets.PATH }};
           git checkout main:
           git pull;
-          docker stop tgbot;
-          docker rm tgbot;
-          docker image rm tgbot;
-          docker build -t tgbot .;
-          docker run -d --name tgbot tgbot;
+          docker compose down;
+          docker compose up -d --build;
+          docker rmi $(docker images -f dangling=true -q)
 
