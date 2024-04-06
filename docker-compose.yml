@@ -47,6 +47,7 @@ services:
 
   text2image_consumer:
     container_name: text2image_consumer
+    hostname: text2image
     build: 
       context: ./text2image/
       dockerfile: ./Dockerfile
