@@ -7,6 +7,9 @@ services:
   tgbot:
     container_name: tgbot
     hostname: tgbot
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     build: 
       context: .
       dockerfile: ./Dockerfile
@@ -47,6 +50,9 @@ services:
 
   text2image_consumer:
     container_name: text2image_consumer
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
     hostname: text2image
     build: 
       context: ./text2image/
