@@ -1,14 +1,12 @@
 import asyncio
-import os
 
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from application.handlers import admin, chat, images, novel
 from infrastructure.ioc import init_logger
-from logic.novel import parse
 from logic.novel.shedule import set_scheduler_tasks
 from settings import settings
 

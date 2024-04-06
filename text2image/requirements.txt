@@ -1,0 +1,4 @@
+httpx
+aio_pika
+aiogram
+pydantic_settings

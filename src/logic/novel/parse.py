@@ -3,25 +3,28 @@ import traceback
 
 import requests
 from bs4 import BeautifulSoup
+from httpx import Response
 
+from infrastructure.ioc import init_async_client
 from logic.novel.translate import get_translate
 
 
-def get_last_chapters() -> list:
+async def get_last_chapters() -> list[dict]:
     """Returns the last five chapters of the novel"""
-    response = requests.get(
+    client = init_async_client()
+    data = []
+    response: Response = await client.get(
         url="https://readlitenovel.com/the-beginning-after-the-end-535558", timeout=10
     )
     soup = BeautifulSoup(response.text, "html.parser")
     novel = soup.find("div", {"class": "novels-detail-right"})
     info = novel.find_all("a", {"class": "box"})
-    data = []
     for item in info[1::]:
-        data.append([item.text[4:], item.get("href")])
+        data.append({"number": int(item.text[4:]), "url": item.get("href")})
     return data
 
 
-def get_chapter_text(url, number, lang):
+def get_chapter_text(url: str, number: int, lang: str) -> None:
     """Gets the chapter text and translate it into the target language"""
     response = requests.get(url=url, timeout=10)
     soup = BeautifulSoup(response.text, "html.parser")

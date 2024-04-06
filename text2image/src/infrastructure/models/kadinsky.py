@@ -15,7 +15,7 @@ class Text2ImageAPI:
             "X-Key": f"Key {settings.API_KEY_KADINSKY}",
             "X-Secret": f"Secret {settings.API_SECRET_KEY_KADINSKY}",
         }
-        self.client = init_async_client(
+        self.client: AsyncClient = init_async_client(
             base_url="https://api-key.fusionbrain.ai/", headers=self.__AUTH_HEADERS
         )
         self.model_id = self.__get_model()

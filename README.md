@@ -10,7 +10,7 @@ It can:
 
 ## Setup
 
-Create a .env file and enter the following variables:
+1. Create a .env file and enter the following variables:
 ```python
 BOT_TOKEN=
 API_KEY_CHATGPT=
@@ -24,8 +24,7 @@ DB_USER=
 DB_PASS=
 DB_NAME=
 ```
-
-Then run main.py
+2. Run <code>docker compose up</code> or  <code>poetry install && poetry run ./src/main.py</code>
 
 ## Bot commands
 
