@@ -17,23 +17,23 @@ async def get_chapters(message: types.Message):
     buttons = [
         [
             types.InlineKeyboardButton(
-                text=f"CH {chapters[0][0]}", callback_data=f"chapter_{chapters[0][0]}"
+                text=f"CH {chapters[0]["number"]}", callback_data=f"chapter_{chapters[0]["url"]}"
             ),
             types.InlineKeyboardButton(
-                text=f"CH {chapters[1][0]}", callback_data=f"chapter_{chapters[1][0]}"
-            ),
-        ],
-        [
-            types.InlineKeyboardButton(
-                text=f"CH {chapters[2][0]}", callback_data=f"chapter_{chapters[2][0]}"
-            ),
-            types.InlineKeyboardButton(
-                text=f"CH {chapters[3][0]}", callback_data=f"chapter_{chapters[3][0]}"
+                text=f"CH {chapters[1]["number"]}", callback_data=f"chapter_{chapters[1]["url"]}"
             ),
         ],
         [
             types.InlineKeyboardButton(
-                text=f"CH {chapters[4][0]}", callback_data=f"chapter_{chapters[4][0]}"
+                text=f"CH {chapters[2]["number"]}", callback_data=f"chapter_{chapters[2]["url"]}"
+            ),
+            types.InlineKeyboardButton(
+                text=f"CH {chapters[3]["number"]}", callback_data=f"chapter_{chapters[3]["url"]}"
+            ),
+        ],
+        [
+            types.InlineKeyboardButton(
+                text=f"CH {chapters[4]["number"]}", callback_data=f"chapter_{chapters[4]["url"]}"
             )
         ],
     ]

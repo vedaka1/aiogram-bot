@@ -7,7 +7,15 @@ from typing import Any, AsyncGenerator
 
 import asyncpg
 from asyncpg.connection import Connection
+from httpx import AsyncClient
 
+from infrastructure.message_broker.main import (
+    build_rq_channel,
+    build_rq_channel_pool,
+    build_rq_connection_pool,
+    build_rq_transaction,
+)
+from infrastructure.message_broker.message_broker import MessageBroker, RabbitMQ
 from infrastructure.repositories.user import UserRepository
 from settings import settings
 
@@ -24,6 +32,11 @@ def init_logger() -> Logger:
     return logger
 
 
+def init_async_client(base_url: str = "", headers: dict = None) -> AsyncClient:
+    client = AsyncClient(base_url=base_url, headers=headers)
+    return client
+
+
 @asynccontextmanager
 async def create_connection() -> AsyncGenerator[Any, Connection]:
     try:
@@ -36,3 +49,12 @@ async def create_connection() -> AsyncGenerator[Any, Connection]:
 
 
 user_repository = UserRepository(connection=create_connection, db_schema="tg_bot")
+
+
+connection_pool = build_rq_connection_pool(settings.RABBITMQ_URL)
+channel_pool = build_rq_channel_pool(connection_pool)
+
+
+async def init_message_broker():
+    broker = MessageBroker(channel_pool)
+    return broker
