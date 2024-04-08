@@ -14,5 +14,6 @@ class AdminMiddleware(BaseMiddleware):
         user = data["event_from_user"]
         if user.id == 426826549:
             return await handler(event, data)
+
         await event.answer("\U00002757 <i>Permission denied</i>", show_alert=True)
         return

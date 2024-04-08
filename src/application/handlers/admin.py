@@ -73,10 +73,29 @@ async def proccess_add_image(
 async def send_announcement(data: Dict[str, Any], bot: Bot) -> None:
     text = data["text"]
     image = data.get("image", "")
+    users = await user_repository.get_last_users()
     if image:
-        await bot.send_photo(chat_id=426826549, photo=image, caption=text)
+        for user in users:
+            await bot.send_photo(chat_id=user["id"], photo=image, caption=text)
         return
-    await bot.send_message(chat_id=426826549, text=text)
+    for user in users:
+        await bot.send_message(chat_id=user["id"], text=text)
+
+
+@router.message(filters.Command("cancel"))
+@router.message(F.text.casefold() == "cancel")
+async def cancel_handler(message: types.Message, state: FSMContext) -> None:
+    """
+    Allow user to cancel any action
+    """
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+
+    await state.clear()
+    await message.answer(
+        "Cancelled.",
+    )
 
 
 # @router.message(filters.Command("logs"))
