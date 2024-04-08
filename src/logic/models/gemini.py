@@ -7,7 +7,6 @@ from google.api_core.exceptions import FailedPrecondition
 from domain.common.response import Response
 from domain.neuro.model import BaseTextModel
 from domain.users.user import User
-from infrastructure.ioc import init_logger
 from settings import settings
 
 
@@ -21,7 +20,7 @@ def init_gemini() -> genai.GenerativeModel:
 @dataclass
 class GeminiAI(BaseTextModel):
 
-    logger: logging.Logger = field(default=init_logger(), init=False)
+    logger: logging.Logger = field(default=logging.getLogger(), init=False)
     model: genai.GenerativeModel = field(default=init_gemini(), init=False)
 
     async def generate_response(self, user: User) -> str:

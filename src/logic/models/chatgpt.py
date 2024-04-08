@@ -8,7 +8,6 @@ import openai
 from domain.common.response import Response
 from domain.neuro.model import BaseTextModel
 from domain.users.user import User
-from infrastructure.ioc import init_logger
 from settings import settings
 
 g4f.debug.logging = False
@@ -41,7 +40,7 @@ _providers = [
 class ChatGPT(BaseTextModel):
     """ChatGPT class for bot users"""
 
-    logger: logging.Logger = field(default=init_logger(), init=False)
+    logger: logging.Logger = field(default=logging.getLogger(), init=False)
     client: openai.AsyncOpenAI = field(
         default=openai.AsyncOpenAI(api_key=settings.API_KEY_CHATGPT), init=False
     )
@@ -86,7 +85,7 @@ class ChatGPT(BaseTextModel):
 class FreeChatGPT(BaseTextModel):
     """FreeChatGPT class for bot users"""
 
-    logger: logging.Logger = field(default=init_logger(), init=False)
+    logger: logging.Logger = field(default=logging.getLogger(), init=False)
 
     @classmethod
     async def _run_provider(
@@ -127,3 +126,7 @@ class FreeChatGPT(BaseTextModel):
     def create_message(message) -> dict[str, str]:
         """Adds the user's message to the message list"""
         return {"role": "user", "content": message}
+
+    @classmethod
+    def _test_access(cls):
+        return True
