@@ -11,3 +11,4 @@ test.txt
 start.ps1
 .venv
 .env
+.env.test

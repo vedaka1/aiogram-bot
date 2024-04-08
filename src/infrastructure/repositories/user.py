@@ -50,6 +50,7 @@ class UserRepository(BaseUserRepository):
             for user in users:
                 result.append(
                     {
+                        "user_id": user[1],
                         "username": user[4],
                         "last_use": user[5].strftime("%Y-%m-%d %H:%M"),
                     }

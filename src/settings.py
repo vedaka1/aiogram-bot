@@ -3,10 +3,17 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     BOT_TOKEN: str
+
     API_KEY_CHATGPT: str
+
     API_KEY_GEMINI: str
+
     API_KEY_KADINSKY: str
     API_SECRET_KEY_KADINSKY: str
+
+    AUTH_DATA_SBER: str
+    CLIENT_ID_SBER: str
+    CLIENT_SECRET_SBER: str
 
     DB_HOST: str
     DB_PORT: str

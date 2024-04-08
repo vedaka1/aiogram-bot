@@ -9,7 +9,7 @@ class User:
     messages: list[dict] = field(default_factory=list, init=False)
     model: BaseTextModel = field(default=None, init=False)
 
-    def add_message(self, text) -> None:
+    def add_message(self, text: str) -> None:
         """Adds the user's message to the message list"""
         self.messages.append(self.model.create_message(text))
 
