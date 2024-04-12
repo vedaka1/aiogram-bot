@@ -24,9 +24,10 @@ async def get_last_chapters() -> list[dict]:
     return data
 
 
-def get_chapter_text(url: str, number: int, lang: str) -> None:
+async def get_chapter_text(url: str, number: int, lang: str) -> None:
     """Gets the chapter text and translate it into the target language"""
-    response = requests.get(url=url, timeout=10)
+    client = init_async_client()
+    response: Response = await client.get(url=url, timeout=10)
     soup = BeautifulSoup(response.text, "html.parser")
     chapter = soup.find(id="chapterText")
     if not os.path.exists("./translated"):
