@@ -4,7 +4,7 @@ import traceback
 
 from aiogram import F, Router, filters, types
 
-from logic.novel import parse
+from logic.novel.parse import get_chapter_text, get_last_chapters, get_translate
 
 logger = logging.getLogger()
 router = Router()
@@ -13,33 +13,33 @@ WEBSITE = "https://readlitenovel.com/the-beginning-after-the-end-535558"
 
 @router.message(filters.Command("last_chapters"))
 async def get_chapters(message: types.Message):
-    chapters = await parse.get_last_chapters()
+    chapters = await get_last_chapters()
     buttons = [
         [
             types.InlineKeyboardButton(
-                text=f"CH {chapters[0]["number"]}", callback_data=f"chapter_{chapters[0]["url"]}"
+                text=f"CH {chapters[0]["number"]}", callback_data=f"chapter_{chapters[0]["number"]}"
             ),
             types.InlineKeyboardButton(
-                text=f"CH {chapters[1]["number"]}", callback_data=f"chapter_{chapters[1]["url"]}"
-            ),
-        ],
-        [
-            types.InlineKeyboardButton(
-                text=f"CH {chapters[2]["number"]}", callback_data=f"chapter_{chapters[2]["url"]}"
-            ),
-            types.InlineKeyboardButton(
-                text=f"CH {chapters[3]["number"]}", callback_data=f"chapter_{chapters[3]["url"]}"
+                text=f"CH {chapters[1]["number"]}", callback_data=f"chapter_{chapters[1]["number"]}"
             ),
         ],
         [
             types.InlineKeyboardButton(
-                text=f"CH {chapters[4]["number"]}", callback_data=f"chapter_{chapters[4]["url"]}"
+                text=f"CH {chapters[2]["number"]}", callback_data=f"chapter_{chapters[2]["number"]}"
+            ),
+            types.InlineKeyboardButton(
+                text=f"CH {chapters[3]["number"]}", callback_data=f"chapter_{chapters[3]["number"]}"
+            ),
+        ],
+        [
+            types.InlineKeyboardButton(
+                text=f"CH {chapters[4]["number"]}", callback_data=f"chapter_{chapters[4]["number"]}"
             )
         ],
     ]
     keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
     await message.answer(
-        f"<a href='{WEBSITE}'>The Beginning After The End</a>\nChoose chapter to translate:",
+        text=f"<a href='{WEBSITE}'>The Beginning After The End</a>\nChoose chapter to translate:",
         reply_markup=keyboard,
     )
 
@@ -70,7 +70,7 @@ async def get_chapter_translate_lang(callback: types.CallbackQuery):
             msg = await callback.message.answer(
                 "<i>Waiting for translate</i> \U0001F551"
             )
-            await parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, lang)
+            await get_chapter_text(f"{WEBSITE}/chapter-{number}", number, lang)
             await msg.delete()
         file = types.FSInputFile(f"./translated/{number}_{lang}.txt")
         await callback.message.answer_document(file)
@@ -91,7 +91,7 @@ async def get_custom_chapter_translate(message: types.Message):
     try:
         if not os.path.exists(f"translated/{number}.txt"):
             await message.answer("<i>Waiting for translate</i> \U0001F551")
-            await parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, "ru")
+            await get_chapter_text(f"{WEBSITE}/chapter-{number}", number, "ru")
         file = types.FSInputFile(f"translated/{number}.txt")
         await message.answer_document(file)
     except:

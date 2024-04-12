@@ -1,7 +1,6 @@
 import os
 import traceback
 
-import requests
 from bs4 import BeautifulSoup
 from httpx import Response
 
@@ -25,9 +24,10 @@ async def get_last_chapters() -> list[dict]:
 
 
 async def get_chapter_text(url: str, number: int, lang: str) -> None:
+    print(url, number, lang)
     """Gets the chapter text and translate it into the target language"""
     client = init_async_client()
-    response: Response = await client.get(url=url, timeout=10)
+    response: Response = await client.get(url=url, timeout=10, follow_redirects=True)
     soup = BeautifulSoup(response.text, "html.parser")
     chapter = soup.find(id="chapterText")
     if not os.path.exists("./translated"):
