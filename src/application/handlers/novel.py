@@ -13,7 +13,7 @@ WEBSITE = "https://readlitenovel.com/the-beginning-after-the-end-535558"
 
 @router.message(filters.Command("last_chapters"))
 async def get_chapters(message: types.Message):
-    chapters = parse.get_last_chapters()
+    chapters = await parse.get_last_chapters()
     buttons = [
         [
             types.InlineKeyboardButton(
@@ -70,7 +70,7 @@ async def get_chapter_translate_lang(callback: types.CallbackQuery):
             msg = await callback.message.answer(
                 "<i>Waiting for translate</i> \U0001F551"
             )
-            parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, lang)
+            await parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, lang)
             await msg.delete()
         file = types.FSInputFile(f"./translated/{number}_{lang}.txt")
         await callback.message.answer_document(file)
@@ -91,7 +91,7 @@ async def get_custom_chapter_translate(message: types.Message):
     try:
         if not os.path.exists(f"translated/{number}.txt"):
             await message.answer("<i>Waiting for translate</i> \U0001F551")
-            parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, "ru")
+            await parse.get_chapter_text(f"{WEBSITE}/chapter-{number}", number, "ru")
         file = types.FSInputFile(f"translated/{number}.txt")
         await message.answer_document(file)
     except:

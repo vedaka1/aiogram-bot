@@ -1,11 +1,10 @@
 from typing import Any, Dict
 
 from aiogram import Bot, F, Router, filters, types
+from aiogram.exceptions import TelegramForbiddenError, TelegramNotFound
 from aiogram.fsm.context import FSMContext
-from aiogram.types.reply_keyboard_remove import ReplyKeyboardRemove
 
-from application.middlewares.administrator import AdminMiddleware
-from domain.states.announcement import Announcement
+from domain.forms.announcement import Announcement
 from infrastructure.ioc import user_repository
 
 announcement_router = Router()
@@ -26,8 +25,8 @@ async def process_text(message: types.Message, state: FSMContext) -> None:
     keyboard = types.InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                types.InlineKeyboardButton(text="Yes", callback_data="yes"),
-                types.InlineKeyboardButton(text="No", callback_data="no"),
+                types.InlineKeyboardButton(text="Да", callback_data="yes"),
+                types.InlineKeyboardButton(text="Нет", callback_data="no"),
             ]
         ]
     )
@@ -68,8 +67,8 @@ async def send_announcement_preview(
     image = data.get("image", "")
     keyboard = types.InlineKeyboardMarkup(
         inline_keyboard=[
-            [types.InlineKeyboardButton(text="Да", callback_data="send_yes")],
-            [types.InlineKeyboardButton(text="Нет", callback_data="send_no")],
+            [types.InlineKeyboardButton(text="Отправить", callback_data="send_yes")],
+            [types.InlineKeyboardButton(text="Отменить", callback_data="send_no")],
         ]
     )
     if image:
@@ -91,7 +90,10 @@ async def process_send_announcement_yes(
     await callback.message.answer(f"Объявление отправлено {len(users)} пользователям")
     if image:
         for user in users:
-            await bot.send_photo(chat_id=user["user_id"], photo=image, caption=text)
+            try:
+                await bot.send_photo(chat_id=user["user_id"], photo=image, caption=text)
+            except (TelegramNotFound, TelegramForbiddenError):
+                pass
         return
 
     for user in users:
@@ -102,14 +104,7 @@ async def process_send_announcement_yes(
 async def process_send_announcement_no(
     callback: types.CallbackQuery, state: FSMContext
 ) -> None:
-    current_state = await state.get_state()
-    if current_state is None:
-        return
-
-    await state.clear()
-    await callback.message.answer(
-        "Cancelled.",
-    )
+    await cancel_handler(message=callback.message, state=state)
 
 
 @announcement_router.message(filters.Command("cancel"))
