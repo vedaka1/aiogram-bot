@@ -8,8 +8,8 @@ from logic.novel import parse
 
 async def scheduled_message(bot: Bot):
     chapters = await parse.get_last_chapters()
-    last_chapter = int(chapters[0][0])
-    last_chapter_link = chapters[0][1]
+    last_chapter = int(chapters[0]["number"])
+    last_chapter_link = chapters[0]["url"]
     if not os.path.exists(f'./translated/{last_chapter}_{"ru" or "en"}.txt'):
         await parse.get_chapter_text(last_chapter_link, last_chapter, "ru")
         file = types.FSInputFile(f"./translated/{last_chapter}_ru.txt")
