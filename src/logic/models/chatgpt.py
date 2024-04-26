@@ -19,7 +19,7 @@ _providers = [
     # g4f.Provider.ChatBase,
     # g4f.Provider.Bing,
     # g4f.Provider.GptGo,
-    # g4f.Provider.You,
+    g4f.Provider.You,
     # g4f.Provider.Yqcloud,
     # g4f.Provider.GPTalk,
     g4f.Provider.Hashnode,
@@ -33,6 +33,10 @@ _providers = [
     g4f.Provider.FlowGpt,
     g4f.Provider.GptTalkRu,
     g4f.Provider.Vercel,
+    g4f.Provider.Aichatos,
+    g4f.Provider.Cnote,
+    g4f.Provider.DuckDuckGo,
+    g4f.Provider.Feedough,
 ]
 
 

@@ -675,13 +675,13 @@ files = [
 
 [[package]]
 name = "g4f"
-version = "0.2.7.1"
+version = "0.2.9.11"
 description = "The official gpt4free repository | various collection of powerful language models"
 optional = false
 python-versions = "*"
 files = [
-    {file = "g4f-0.2.7.1-py3-none-any.whl", hash = "sha256:26cd53135de220b1704d8d98bf35ec3070975815f1c99f66c3c49612836e84fe"},
-    {file = "g4f-0.2.7.1.tar.gz", hash = "sha256:1e3eed366d83dd747fa79114d4c22db183ae171c5c9740f1ce11c6e5b10d28bb"},
+    {file = "g4f-0.2.9.11-py3-none-any.whl", hash = "sha256:ec9018a7455ee5a5172597ec96cff103c689872402617042ded57a3b381e7332"},
+    {file = "g4f-0.2.9.11.tar.gz", hash = "sha256:49a035462da29fda90555af18ee5fb60989a2169d2ef839579d7b07bac3998cc"},
 ]
 
 [package.dependencies]
@@ -691,13 +691,15 @@ pycryptodome = "*"
 requests = "*"
 
 [package.extras]
-all = ["PyExecJS", "aiohttp-socks", "beautifulsoup4", "brotli", "browser-cookie3", "cairosvg", "certifi", "curl-cffi (>=0.6.2)", "duckduckgo-search (>=5.0)", "fastapi", "flask", "loguru", "nest-asyncio", "pillow", "platformdirs", "plyer", "pywebview", "uvicorn", "werkzeug"]
+all = ["PyExecJS", "aiohttp-socks", "beautifulsoup4", "brotli", "browser-cookie3", "cairosvg", "certifi", "cryptography", "curl-cffi (>=0.6.2)", "duckduckgo-search (>=5.0)", "fastapi", "flask", "loguru", "nest-asyncio", "pillow", "platformdirs", "plyer", "pycryptodome", "pywebview", "uvicorn", "werkzeug"]
 api = ["fastapi", "loguru", "nest-asyncio", "uvicorn"]
+curl-cffi = ["curl-cffi (>=0.6.2)"]
 gui = ["beautifulsoup4", "browser-cookie3", "duckduckgo-search (>=5.0)", "flask", "pillow", "werkzeug"]
 image = ["beautifulsoup4", "cairosvg", "pillow"]
 local = ["gpt4all"]
+openai = ["pycryptodome"]
 webdriver = ["platformdirs", "selenium-wire", "setuptools", "undetected-chromedriver (>=3.5.5)"]
-webview = ["platformdirs", "plyer", "webview"]
+webview = ["cryptography", "platformdirs", "plyer", "webview"]
 
 [[package]]
 name = "google-ai-generativelanguage"
@@ -1710,4 +1712,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "6df9c735a131d701e6cb3855771323ca44eac51586b2594eec244c56055134ad"
+content-hash = "1321f688a31a27b217db0faae5c1221c61788cb0da4f4b80aac8f8e47ef35923"
