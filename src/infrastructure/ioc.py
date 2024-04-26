@@ -76,3 +76,23 @@ def init_models() -> dict:
         },
     }
     return models
+
+
+# def init_models() -> dict:
+#     gemini = GeminiAI()
+#     chatgpt = ChatGPT()
+#     freechatgpt = FreeChatGPT()
+#     gigachat = GigaChatAI()
+#     models = {
+#         "Gemini": {"model": gemini, "status": gemini._test_access()},
+#         "ChatGPT": {"model": chatgpt, "status": chatgpt._test_access()},
+#         "FreeChatGPT": {
+#             "model": freechatgpt,
+#             "status": freechatgpt._test_access(),
+#         },
+#         "GigaChatAI": {
+#             "model": gigachat,
+#             "status": gigachat._test_access(),
+#         },
+#     }
+#     return models
